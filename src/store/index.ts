@@ -1,11 +1,17 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import coinsReducer from './reducers/CoinsSlice';
 
-const store = configureStore({
-    reducer: {
-    },
+const RootReducer = combineReducers({
+    coins: coinsReducer,
 });
 
-export default store;
 
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch; 
+export const setupStore = () => {
+    return configureStore({
+        reducer: RootReducer,
+    });
+}
+
+export type RootState = ReturnType<typeof RootReducer>;
+export type AppStore = ReturnType<typeof setupStore>;
+export type AppDispatch = AppStore['dispatch'];
