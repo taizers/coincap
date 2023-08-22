@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import CustomIconButton from './IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { ITableCoin } from '../models/ICoins';
+import { handleAddButtonClick, roundValue } from '../utils';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -126,13 +127,6 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, o
   );
 }
 
-const roundValue = (price: number) => {
-  if (+price.toFixed(2) !== 0) {
-    return price.toFixed(2);
-  }
-  return price.toString();
-} 
-
 interface IEnhancedTable {
   rows: ITableCoin[];
 }
@@ -156,11 +150,6 @@ const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
 
   const handleRowClick = (id: string) => {
     navigate(`coins/${id}`);
-  };
-
-  const handleAddButtonClick = (event: React.MouseEvent<unknown>, id: string) => {
-    event.stopPropagation();
-    console.log(id);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
