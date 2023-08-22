@@ -4,12 +4,12 @@ import IconButton from '@mui/material/IconButton';
 
 interface IIconButton {
     Icon: SvgIconComponent;
-    onClick: () => void;
+    onClick: (event: React.MouseEvent<unknown>) => void;
     size: 'small' | 'medium' | 'large' | undefined;
 }
 
 const CustomIconButton: FC<IIconButton> = ({ Icon, onClick, size }) => {
-  return <IconButton onClick={onClick} size={size}><Icon /></IconButton>
+  return (<IconButton onClick={onClick} size={size}><Icon /></IconButton>);
 }
 
 export default CustomIconButton;

@@ -9,46 +9,12 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import { visuallyHidden } from '@mui/utils';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import CustomIconButton from './IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-
-interface Data {
-    marketCapUsd: number;
-    changePercent24Hr: number;
-    priceUsd: number;
-    symbol: string;
-    id: string;
-}
-
-function createData(
-    symbol: string,
-    marketCapUsd: number,
-    priceUsd: number,
-    changePercent24Hr: number,
-    id: string,
-): Data {
-  return {
-    symbol,
-    marketCapUsd,
-    priceUsd,
-    changePercent24Hr,
-    id
-  };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7, 67,'1'),
-  createData('Donut', 452, 25.0, 51,'2'),
-  createData('Eclair', 262, 16.0, 24,'3'),
-  createData('Frozen yoghurt', 159, 6.0, 24,'4'),
-  createData('Gingerbread', 356, 16.0, 49,'5'),
-  createData('Honeycomb', 408, 3.2, 87,'6'),
-  createData('Ice cream sandwich', 237, 9.0, 37,'7'),
-];
+import { ITableCoin } from '../models/ICoins';
+import { Link } from 'react-router-dom';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -74,7 +40,7 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -87,41 +53,27 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
 }
 
 interface HeadCell {
-  disablePadding: boolean;
-  id: keyof Data;
+  id: keyof ITableCoin;
   label: string;
-  numeric: boolean;
 }
 
 const headCells: readonly HeadCell[] = [
   {
-    id: 'symbol',
-    numeric: false,
-    disablePadding: true,
-    label: 'Symbol',
-  },
-  {
-    id: 'marketCapUsd',
-    numeric: true,
-    disablePadding: false,
-    label: 'Market Cap',
-  },
-  {
     id: 'priceUsd',
-    numeric: true,
-    disablePadding: false,
     label: 'Price USD',
   },
   {
+    id: 'marketCapUsd',
+    label: 'Market Cap',
+  },
+  {
     id: 'changePercent24Hr',
-    numeric: true,
-    disablePadding: false,
     label: '24h',
   },
 ];
 
 interface EnhancedTableProps {
-  onRequestSort: (event: MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: MouseEvent<unknown>, property: keyof ITableCoin) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
@@ -129,20 +81,31 @@ interface EnhancedTableProps {
 
 const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, onRequestSort }) => {
   const createSortHandler =
-    (property: keyof Data) => (event: MouseEvent<unknown>) => {
+    (property: keyof ITableCoin) => (event: MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell align='right'>
+        </TableCell>
+        <TableCell
+          key='symbol'
+          align='right'
+        >
+          {'Symbol'}
+        </TableCell>
+                <TableCell
+          key='logo'
+          align='right'
+        >
+          {'Logo'}
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
+            align='right'
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -164,18 +127,28 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, o
   );
 }
 
-const EnhancedTable = () =>  {
+const roundValue = (price: number) => {
+  if (+price.toFixed(2) !== 0) {
+    return price.toFixed(2);
+  }
+  return price.toString();
+} 
+
+interface IEnhancedTable {
+  rows: ITableCoin[];
+}
+
+const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
   const [order, setOrder] = useState<Order>('asc');
-  const [orderBy, setOrderBy] = useState<keyof Data>('symbol');
+  const [orderBy, setOrderBy] = useState<keyof ITableCoin>('symbol');
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const handleRequestSort = (
     event: MouseEvent<unknown>,
-    property: keyof Data,
+    property: keyof ITableCoin,
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -183,11 +156,13 @@ const EnhancedTable = () =>  {
   };
 
   const handleRowClick = (id: string) => {
-    history(`coins/${id}`);
+    navigate(`coins/${id}`);
   };
 
-  const handleAddButtonClick = (id: string) => {
+  const handleAddButtonClick = (event: React.MouseEvent<unknown>, id: string) => {
     //
+    event.stopPropagation();
+    console.log(id);
   };
 
   const handleChangePage = (event: unknown, newPage: number) => {
@@ -197,10 +172,6 @@ const EnhancedTable = () =>  {
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const handleChangeDense = (event: ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -218,12 +189,11 @@ const EnhancedTable = () =>  {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
+      <Paper sx={{ width: '100%', m: 2 }}>
         <TableContainer>
           <Table
             sx={{ minWidth: 550 }}
             aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
               order={order}
@@ -233,41 +203,28 @@ const EnhancedTable = () =>  {
             />
             <TableBody>
               {visibleRows.map((row:any, index) => {
-                const labelId = `enhanced-table-${index}`;
-
                 return (
                   <TableRow
                     hover
                     onClick={() => handleRowClick(row.id)}
                     role="coinRow"
                     tabIndex={-1}
-                    key={row.symbol}
+                    key={row.id}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell padding="checkbox">
-                      <CustomIconButton size='medium' onClick={() => handleAddButtonClick(row.id)} Icon={AddShoppingCartIcon} />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.symbol}
+                    <TableCell>
+                      <CustomIconButton size='medium' onClick={(event: React.MouseEvent<unknown>) => handleAddButtonClick(event, row.id)} Icon={AddShoppingCartIcon} />
                     </TableCell>
                     <TableCell align="right">{row.symbol}</TableCell>
-                    <TableCell align="right">{row.priceUsd}</TableCell>
-                    <TableCell align="right">{row.marketCapUsd}</TableCell>
-                    <TableCell align="right">{row.changePercent24Hr}</TableCell>
+                    <TableCell align="right">{row.symbol}</TableCell>
+                    <TableCell align="right">{`${roundValue(row.priceUsd)} $`}</TableCell>
+                    <TableCell align="right">{`${roundValue(row.marketCapUsd)} $`}</TableCell>
+                    <TableCell align="right">{`${roundValue(row.changePercent24Hr)} %`}</TableCell>
                   </TableRow>
                 );
               })}
               {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
+                <TableRow>
                   <TableCell colSpan={6} />
                 </TableRow>
               )}
@@ -284,10 +241,6 @@ const EnhancedTable = () =>  {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
     </Box>
   );
 }

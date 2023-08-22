@@ -11,3 +11,12 @@ export interface  ICoin {
     changePercent24Hr: string;
     vwap24Hr: string;
 };
+
+export interface  ITableCoin {
+    id: string;
+    name: string;
+    symbol: string;
+    marketCapUsd: number;
+    priceUsd: number;
+    changePercent24Hr: number;
+};
