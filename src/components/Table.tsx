@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState, MouseEvent, ChangeEvent } from 'react';
+import React, { FC, useState, MouseEvent, ChangeEvent } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -14,7 +14,6 @@ import { useNavigate } from "react-router-dom";
 import CustomIconButton from './IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { ITableCoin } from '../models/ICoins';
-import { Link } from 'react-router-dom';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -160,7 +159,6 @@ const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
   };
 
   const handleAddButtonClick = (event: React.MouseEvent<unknown>, id: string) => {
-    //
     event.stopPropagation();
     console.log(id);
   };
@@ -174,17 +172,12 @@ const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
     setPage(0);
   };
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage,
-      ),
-    [order, orderBy, page, rowsPerPage],
+  const visibleRows = stableSort(rows, getComparator(order, orderBy)).slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage, 
   );
 
   return (
