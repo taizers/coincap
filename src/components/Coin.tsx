@@ -6,22 +6,17 @@ import CustomIconButton from './IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { fetchCoin } from '../store/reducers/ActionCreator';
 import { handleAddButtonClick, roundValue } from '../utils';
 import CustomButton from './Button';
 import Loader from './Loader';
+import { coinsApi } from '../services/CoinsService';
 
 const Coin = () => {
     const { id } = useParams();
-    const dispatch = useAppDispatch();
-    const { coin, isLoading, error } = useAppSelector(state => state.coin);
+
+    const {data, error, isLoading} = coinsApi.useFetchCoinQuery(id ? id : '');
+    const coin = data?.data;
     const navigate = useNavigate();
-    useEffect(()=>{
-        if (id) {
-            dispatch(fetchCoin(id));
-        }
-    },[]);
 
     const handleBackButtonClick = () => {
         navigate('/')
@@ -37,7 +32,8 @@ const Coin = () => {
                     <CustomIconButton size='medium' onClick={() => handleBackButtonClick()} Icon={ArrowBackIcon} />
             </Box>
             {isLoading && <Loader />}
-            {coin && <Box sx={{
+            {error && <Typography align='center' variant='h2'>{'error'}</Typography>}
+            {!!coin && <Box sx={{
                 width: '100%',
                 display: 'flex',
                 flexWrap: 'wrap',
@@ -53,7 +49,7 @@ const Coin = () => {
                             <Box sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
                             {'Logo'}
                             <Typography sx={{ml: 1, mr: 1}} align='left' variant='h4'>{coin.name}</Typography>
-                            <Typography color='#616e85' sx={{mr: 1}} align='left' variant='subtitle1'>{coin.symbol}</Typography>
+                            <Typography  sx={{mr: 1, color: '#616e85'}} align='left' variant='subtitle1'>{coin.symbol}</Typography>
                             </Box>
                             <Box sx={{display: 'flex', alignItems: 'center', flexWrap: 'wrap'}}>
                                 <Typography sx={{m: 3}} align='left' variant='h3'>{`${roundValue(+coin.priceUsd)} $`}</Typography>
@@ -68,23 +64,25 @@ const Coin = () => {
                         {coin.maxSupply && <Typography align='left' variant='h4'>Max supply: {`${roundValue(+coin.maxSupply)} $`}</Typography>}
                         {coin.marketCapUsd && <Typography align='left' variant='h4'>Market cap: {`${roundValue(+coin.marketCapUsd)} $`}</Typography>}
                     </Box>
-                    <Box sx={{ overflowX: 'overlay', display: 'flex', flexDirection: 'column', border: 'solid black 1px', flex: '1 1 500px'}}>
-                        <Box sx={{ display: 'flex', mt: 1, gap: '10px' }}>
-                            <CustomButton text={'1D'} size={'small'} onClick={() => {}} variant={'outlined'} />
-                            <CustomButton text={'7D'} size={'small'} onClick={() => {}} variant={'outlined'} />
-                            <CustomButton text={'1M'} size={'small'} onClick={() => {}} variant={'outlined'} />
+                    <Box sx={{ overflowX: 'overlay', border: 'solid black 1px', flex: '1 1 500px'}}>
+                        <Box sx={{display: 'flex', width: '100%', flexDirection: 'column', alignItems: 'center'}}>
+                            <Box sx={{ display: 'flex', mt: 1, gap: '10px' }}>
+                                <CustomButton text={'1D'} size={'small'} onClick={() => {}} variant={'outlined'} />
+                                <CustomButton text={'7D'} size={'small'} onClick={() => {}} variant={'outlined'} />
+                                <CustomButton text={'1M'} size={'small'} onClick={() => {}} variant={'outlined'} />
+                            </Box>
+                            <LineChart
+                                xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
+                                series={[
+                                    {
+                                    data: [2, 5.5, 2, 8.5, 1.5, 5],
+                                    area: true,
+                                    },
+                                ]}
+                                width={500}
+                                height={300}
+                            />
                         </Box>
-                        <LineChart
-                            xAxis={[{ data: [1, 2, 3, 5, 8, 10] }]}
-                            series={[
-                                {
-                                data: [2, 5.5, 2, 8.5, 1.5, 5],
-                                area: true,
-                                },
-                            ]}
-                            width={500}
-                            height={300}
-                        />
                     </Box>
             </Box>}
             

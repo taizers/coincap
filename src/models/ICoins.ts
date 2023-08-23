@@ -12,6 +12,11 @@ export interface  ICoin {
     vwap24Hr: string;
 };
 
+export interface  ICoinHistory {
+    priceUsd: string;
+    time: number;
+};
+
 export interface  ITableCoin {
     id: string;
     name: string;

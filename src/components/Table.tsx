@@ -1,4 +1,4 @@
-import React, { FC, useState, MouseEvent, ChangeEvent } from 'react';
+import React, { FC, useState, useEffect, MouseEvent, ChangeEvent } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -15,6 +15,7 @@ import CustomIconButton from './IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { ITableCoin } from '../models/ICoins';
 import { handleAddButtonClick, roundValue } from '../utils';
+import { defaultPage } from '../constants';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -129,13 +130,18 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, o
 
 interface IEnhancedTable {
   rows: ITableCoin[];
+  setLimit: (data: number) => void;
+  setPage: (data: number) => void;
+  limit: number;
+  page: number;
+  itemsCount?: number;
 }
 
-const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
+const rowsPerPageOptions=[5, 10, 25];
+
+const EnhancedTable:FC<IEnhancedTable> = ({rows, page, limit, itemsCount = 0, setPage, setLimit}) =>  {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ITableCoin>('symbol');
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const navigate = useNavigate();
 
@@ -157,18 +163,14 @@ const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
   };
 
   const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setLimit(parseInt(event.target.value, 10));
+    setPage(defaultPage);
   };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * limit - itemsCount) : 0;
 
-  const visibleRows = stableSort(rows, getComparator(order, orderBy)).slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage, 
-  );
-
+  const visibleRows = stableSort(rows, getComparator(order, orderBy));
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', m: 2 }}>
@@ -181,10 +183,10 @@ const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={itemsCount}
             />
             <TableBody>
-              {visibleRows.map((row:any, index) => {
+              {visibleRows.map((row, index) => {
                 return (
                   <TableRow
                     hover
@@ -214,10 +216,10 @@ const EnhancedTable:FC<IEnhancedTable> = ({rows}) =>  {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={rowsPerPageOptions}
           component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
+          count={itemsCount}
+          rowsPerPage={limit}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
