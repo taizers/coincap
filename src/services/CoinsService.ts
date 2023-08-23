@@ -25,7 +25,7 @@ export const coinsApi= createApi({
                 url: `/assets/${id}`  
             })
         }),
-        fetchPopularCoin: build.query<{data: ICoin[]}, string>({
+        fetchPopularCoins: build.query<{data: ICoin[]}, string>({
             query: (ids: string) => ({
                 url: `/assets`,
                 params: {
@@ -33,11 +33,13 @@ export const coinsApi= createApi({
                 }  
             })
         }),
-        fetchCoinHistory: build.query<{data: ICoinHistory[]}, {id: string, interval: string}>({
-            query: ({id, interval}) => ({
+        fetchCoinHistory: build.query<{data: ICoinHistory[]}, {id: string, interval: string, start: number, end: number}>({
+            query: ({id, interval, start, end}) => ({
                 url: `/assets/${id}/history`,
                 params: {
                     interval,
+                    start,
+                    end,
                 }  
             })
         }),

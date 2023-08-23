@@ -15,6 +15,7 @@ export interface  ICoin {
 export interface  ICoinHistory {
     priceUsd: string;
     time: number;
+    date: Date;
 };
 
 export interface  ITableCoin {

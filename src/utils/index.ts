@@ -1,3 +1,6 @@
+import { AppDispatch } from "../store";
+import {coinModalSlice} from '../store/reducers/CoinModalSlice';
+
 export const roundValue = (price: number) => {
     if (+price.toFixed(2) !== 0) {
       return price.toFixed(2);
@@ -5,7 +8,7 @@ export const roundValue = (price: number) => {
     return price.toString();
 };
 
-export const handleAddButtonClick = (event: React.MouseEvent<unknown>, id: string) => {
+export const handleAddButtonClick = (event: React.MouseEvent<unknown>, id: string, dispatch: AppDispatch) => {
     event.stopPropagation();
-    console.log(id);
+    dispatch(coinModalSlice.actions.openCoinModal(id));
 };

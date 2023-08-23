@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, MouseEvent, ChangeEvent } from 'react';
+import React, { FC, useState, MouseEvent, ChangeEvent } from 'react';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -16,6 +16,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import { ITableCoin } from '../models/ICoins';
 import { handleAddButtonClick, roundValue } from '../utils';
 import { defaultPage } from '../constants';
+import { useAppDispatch } from '../hooks';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -142,6 +143,7 @@ const rowsPerPageOptions=[5, 10, 25];
 const EnhancedTable:FC<IEnhancedTable> = ({rows, page, limit, itemsCount = 0, setPage, setLimit}) =>  {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ITableCoin>('symbol');
+  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
 
@@ -197,7 +199,7 @@ const EnhancedTable:FC<IEnhancedTable> = ({rows, page, limit, itemsCount = 0, se
                     sx={{ cursor: 'pointer' }}
                   >
                     <TableCell>
-                      <CustomIconButton size='medium' onClick={(event: React.MouseEvent<unknown>) => handleAddButtonClick(event, row.id)} Icon={AddShoppingCartIcon} />
+                      <CustomIconButton size='medium' onClick={(event: React.MouseEvent<unknown>) => handleAddButtonClick(event, row.id, dispatch)} Icon={AddShoppingCartIcon} />
                     </TableCell>
                     <TableCell align="right">{row.symbol}</TableCell>
                     <TableCell align="right">{row.symbol}</TableCell>
