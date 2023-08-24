@@ -10,13 +10,13 @@ import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import { Box, Typography } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import Avatar from '@mui/material/Avatar';
 import CustomIconButton from './IconButton';
 import { ITableCoin } from '../models/ICoins';
 import { getIconsLink, handleAddButtonClick, roundValue } from '../utils';
-import { defaultPage } from '../constants';
+import { defaultPage, rowsPerPageOptions } from '../constants';
 import { useAppDispatch } from '../hooks';
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -33,10 +33,10 @@ type Order = 'asc' | 'desc';
 
 function getComparator<Key extends keyof any>(
   order: Order,
-  orderBy: Key,
+  orderBy: Key
 ): (
   a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
+  b: { [key in Key]: number | string }
 ) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -76,13 +76,21 @@ const headCells: readonly HeadCell[] = [
 ];
 
 interface EnhancedTableProps {
-  onRequestSort: (event: MouseEvent<unknown>, property: keyof ITableCoin) => void;
+  onRequestSort: (
+    event: MouseEvent<unknown>,
+    property: keyof ITableCoin
+  ) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
 }
 
-const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, onRequestSort }) => {
+const EnhancedTableHead: FC<EnhancedTableProps> = ({
+  order,
+  orderBy,
+  rowCount,
+  onRequestSort,
+}) => {
   const createSortHandler =
     (property: keyof ITableCoin) => (event: MouseEvent<unknown>) => {
       onRequestSort(event, property);
@@ -91,12 +99,8 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, o
   return (
     <TableHead>
       <TableRow>
-        <TableCell align='right'>
-        </TableCell>
-        <TableCell
-          key='symbol'
-          align='right'
-        >
+        <TableCell align='right'></TableCell>
+        <TableCell key='symbol' align='left'>
           {'Name'}
         </TableCell>
         {headCells.map((headCell) => (
@@ -112,7 +116,7 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, o
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
+                <Box component='span' sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}
@@ -122,9 +126,7 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({ order, orderBy, rowCount, o
       </TableRow>
     </TableHead>
   );
-}
-
-const rowsPerPageOptions=[5, 10, 25];
+};
 
 interface ICoinsTable {
   rows: ITableCoin[];
@@ -135,7 +137,14 @@ interface ICoinsTable {
   itemsCount?: number;
 }
 
-const CoinsTable:FC<ICoinsTable> = ({rows, page, limit, itemsCount = 0, setPage, setLimit}) =>  {
+const CoinsTable: FC<ICoinsTable> = ({
+  rows,
+  page,
+  limit,
+  itemsCount = 0,
+  setPage,
+  setLimit,
+}) => {
   const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<keyof ITableCoin>('symbol');
   const dispatch = useAppDispatch();
@@ -144,7 +153,7 @@ const CoinsTable:FC<ICoinsTable> = ({rows, page, limit, itemsCount = 0, setPage,
 
   const handleRequestSort = (
     event: MouseEvent<unknown>,
-    property: keyof ITableCoin,
+    property: keyof ITableCoin
   ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -164,17 +173,15 @@ const CoinsTable:FC<ICoinsTable> = ({rows, page, limit, itemsCount = 0, setPage,
     setPage(defaultPage);
   };
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * limit - itemsCount) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * limit - itemsCount) : 0;
 
   const visibleRows = stableSort(rows, getComparator(order, orderBy));
+
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', m: 2 }}>
+    <Box>
+      <Paper sx={{ m: 2 }}>
         <TableContainer>
-          <Table
-            sx={{ minWidth: 550 }}
-          >
+          <Table sx={{ minWidth: 550 }}>
             <EnhancedTableHead
               order={order}
               orderBy={orderBy}
@@ -187,21 +194,40 @@ const CoinsTable:FC<ICoinsTable> = ({rows, page, limit, itemsCount = 0, setPage,
                   <TableRow
                     hover
                     onClick={() => handleRowClick(row.id)}
-                    role="coinRow"
+                    role='coinRow'
                     tabIndex={-1}
                     key={row.id}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell>
-                      <CustomIconButton size='medium' onClick={(event?: MouseEvent<unknown>) => handleAddButtonClick(row.id, dispatch, event)} Icon={AddShoppingCartIcon} />
+                    <TableCell align='left'>
+                      <CustomIconButton
+                        size='medium'
+                        onClick={(event?: MouseEvent<unknown>) =>
+                          handleAddButtonClick(row.id, dispatch, event)
+                        }
+                        Icon={AddShoppingCartIcon}
+                      />
                     </TableCell>
-                    <TableCell sx={{display: 'flex', alignItems: 'center'}} align="right">
+                    <TableCell
+                      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}
+                      align='left'
+                    >
+                      <Avatar
+                        sx={{ display: 'inline-block', mr: 1 }}
+                        alt={row.symbol}
+                        src={getIconsLink(row.symbol)}
+                      />
                       <Typography variant='subtitle1'>{row.symbol}</Typography>
-                      <Avatar sx={{display: 'inline-block', mr:1}} alt={row.symbol} src={getIconsLink(row.symbol)} />
                     </TableCell>
-                    <TableCell align="right">{`${roundValue(row.priceUsd)} $`}</TableCell>
-                    <TableCell align="right">{`${roundValue(row.marketCapUsd)} $`}</TableCell>
-                    <TableCell align="right">{`${roundValue(row.changePercent24Hr)} %`}</TableCell>
+                    <TableCell align='right'>{`${roundValue(
+                      row.priceUsd
+                    )} $`}</TableCell>
+                    <TableCell align='right'>{`${roundValue(
+                      row.marketCapUsd
+                    )} $`}</TableCell>
+                    <TableCell align='right'>{`${roundValue(
+                      row.changePercent24Hr
+                    )} %`}</TableCell>
                   </TableRow>
                 );
               })}
@@ -215,7 +241,7 @@ const CoinsTable:FC<ICoinsTable> = ({rows, page, limit, itemsCount = 0, setPage,
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={rowsPerPageOptions}
-          component="div"
+          component='div'
           count={itemsCount}
           rowsPerPage={limit}
           page={page}
@@ -225,6 +251,6 @@ const CoinsTable:FC<ICoinsTable> = ({rows, page, limit, itemsCount = 0, setPage,
       </Paper>
     </Box>
   );
-}
+};
 
 export default CoinsTable;

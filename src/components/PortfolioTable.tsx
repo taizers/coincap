@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, { FC } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -12,11 +12,11 @@ import { IPortfolioTableItem } from '../models/IPortfolio';
 import { roundValue } from '../utils';
 
 interface IPortfolioTable {
-    list: IPortfolioTableItem[];
-    onDeleteClick: (data: number) => void;
-};
+  list: IPortfolioTableItem[];
+  onDeleteClick: (data: number) => void;
+}
 
-const PortfolioTable: FC<IPortfolioTable> = ({list, onDeleteClick}) => {
+const PortfolioTable: FC<IPortfolioTable> = ({ list, onDeleteClick }) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -31,28 +31,39 @@ const PortfolioTable: FC<IPortfolioTable> = ({list, onDeleteClick}) => {
         </TableHead>
         <TableBody>
           {!list.length && (
-                <TableRow>
-                  <TableCell colSpan={100}  />
-                </TableRow>
-              )}
-          {list?.map((item) => (
+            <TableRow>
+              <TableCell colSpan={6} />
+            </TableRow>
+          )}
+          {list?.map((item, index) => (
             <TableRow
-              key={item.id}
+              key={`${item.id}${index}`}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 {item.name}
               </TableCell>
-              <TableCell align="right">{roundValue(+item.purchasePrice)}</TableCell>
-              <TableCell align="right">{roundValue(+item.currentPrice)}</TableCell>
+              <TableCell align="right">
+                {roundValue(+item.purchasePrice)}
+              </TableCell>
+              <TableCell align="right">
+                {roundValue(+item.currentPrice)}
+              </TableCell>
               <TableCell align="right">{item.count}</TableCell>
-              <TableCell align="right">{<CustomIconButton onClick={() => onDeleteClick(item.index)} Icon={DeleteIcon}/>}</TableCell>
+              <TableCell align="right">
+                {
+                  <CustomIconButton
+                    onClick={() => onDeleteClick(item.index)}
+                    Icon={DeleteIcon}
+                  />
+                }
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
     </TableContainer>
   );
-}
+};
 
 export default PortfolioTable;

@@ -3,17 +3,18 @@ import { Box, Typography } from '@mui/material';
 import { Variant } from '@mui/material/styles/createTypography';
 
 interface IError {
-    text: string;
-    onClick: () => void;
-    variant: Variant;
+  text: string;
+  variant?: Variant;
 }
 
-const Error: FC<IError> = ({text, onClick, variant}) => {
+const Error: FC<IError> = ({ text, variant = 'h5' }) => {
   return (
     <Box>
-        <Typography align='center' variant={variant}>{text}</Typography>
+      <Typography align="center" variant={variant}>
+        {text}
+      </Typography>
     </Box>
   );
-}
+};
 
 export default Error;
