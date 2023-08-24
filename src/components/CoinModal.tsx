@@ -6,16 +6,17 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { getPortfolio, setPortfolio } from '../utils/localStorage';
-import { useAppSelector } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { coinsApi } from '../services/CoinsService';
 import { IPortfolio } from '../models/IPortfolio';
+import { portfolioSlice } from '../store/reducers/PortfolioSlice';
 
 interface ICoinModal {
     handleClose: () => void;
 }
 
-
 const CoinModal: FC<ICoinModal> = ({handleClose}) => {
+    const dispatch = useAppDispatch();
     const [count, setCount] = React.useState<string>('');
 
     const { coinId } = useAppSelector(state => state.coinModal);
@@ -49,6 +50,7 @@ const CoinModal: FC<ICoinModal> = ({handleClose}) => {
         }
         
         setPortfolio(portfolio);
+        dispatch(portfolioSlice.actions.setPortfolioData(portfolio));
         handleClose();
     };
 

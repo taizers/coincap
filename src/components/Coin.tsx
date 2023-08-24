@@ -6,7 +6,8 @@ import CustomIconButton from './IconButton';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
-import { handleAddButtonClick, roundValue } from '../utils';
+import Avatar from '@mui/material/Avatar';
+import { handleAddButtonClick, roundValue, getIconsLink } from '../utils';
 import CustomButton from './Button';
 import Loader from './Loader';
 import { coinsApi } from '../services/CoinsService';
@@ -74,14 +75,14 @@ const Coin = () => {
                         }}
                         >
                             <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap'}}>
-                            {'Logo'}
-                            <Typography sx={{ml: 1, mr: 1, wordWrap: 'break-word'}} align='left' variant='h4'>{coin.name}</Typography>
-                            <Typography  sx={{mr: 1, color: '#616e85', wordWrap: 'break-word'}} align='left' variant='subtitle1'>{coin.symbol}</Typography>
+                                {<Avatar alt={coin.symbol} src={getIconsLink(coin.symbol)} />}
+                                <Typography sx={{ml: 1, mr: 1, wordWrap: 'break-word'}} align='left' variant='h4'>{coin.name}</Typography>
+                                <Typography  sx={{mr: 1, color: '#616e85', wordWrap: 'break-word'}} align='left' variant='subtitle1'>{coin.symbol}</Typography>
                             </Box>
                             <Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap'}}>
                                 <Typography sx={{m: 3}} align='left' variant='h3'>{`${roundValue(+coin.priceUsd)} $`}</Typography>
                                 <Box>
-                                    <CustomIconButton size='large' onClick={(event: React.MouseEvent<unknown>) => handleAddButtonClick(event, coin?.id, dispatch)} Icon={AddShoppingCartIcon} />
+                                    <CustomIconButton size='large' onClick={(event?: React.MouseEvent<unknown>) => handleAddButtonClick(coin?.id, dispatch, event)} Icon={AddShoppingCartIcon} />
                                 </Box>
                             </Box>
 

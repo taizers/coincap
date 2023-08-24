@@ -2,15 +2,18 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Coin from './components/Coin';
-import CoinsTable from './components/CoinsTable';
+import CoinsTablePage from './components/CoinsTablePage';
 import Header from './components/Header';
 import CoinModal from './components/CoinModal';
+import PortfolioModal from './components/PortfolioModal';
 import { Box } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { coinModalSlice } from './store/reducers/CoinModalSlice';
+import { portfolioSlice } from './store/reducers/PortfolioSlice';
 
 function App() {
-  const { isOpen } = useAppSelector(state => state.coinModal);
+  const { isOpen: isCoinModalOpen } = useAppSelector(state => state.coinModal);
+  const { isOpen: isPortfolioModalOpen } = useAppSelector(state => state.portfolio);
   const dispatch = useAppDispatch();
   
   return (
@@ -21,11 +24,12 @@ function App() {
     }}>
         <Header/>
         <Routes>
-          <Route path='/' element={<CoinsTable />} />
+          <Route path='/' element={<CoinsTablePage />} />
           <Route path='/coins/:id' element={<Coin/>} />
         </Routes>
         
-        {isOpen && <CoinModal handleClose={() => dispatch(coinModalSlice.actions.closeCoinModal())} />}
+        {isCoinModalOpen && <CoinModal handleClose={() => dispatch(coinModalSlice.actions.closeCoinModal())} />}
+        {isPortfolioModalOpen && <PortfolioModal handleClose={() => dispatch(portfolioSlice.actions.closePortfolioModal())} />}
     </Box>
 
   );

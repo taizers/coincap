@@ -1,5 +1,6 @@
 import { AppDispatch } from "../store";
 import {coinModalSlice} from '../store/reducers/CoinModalSlice';
+import Avatar from '@mui/material/Avatar';
 
 export const roundValue = (price: number) => {
     if (+price.toFixed(2) !== 0) {
@@ -8,7 +9,9 @@ export const roundValue = (price: number) => {
     return price.toString();
 };
 
-export const handleAddButtonClick = (event: React.MouseEvent<unknown>, id: string, dispatch: AppDispatch) => {
-    event.stopPropagation();
+export const handleAddButtonClick = (id: string, dispatch: AppDispatch, event?: React.MouseEvent<unknown>) => {
+    event?.stopPropagation();
     dispatch(coinModalSlice.actions.openCoinModal(id));
 };
+
+export const getIconsLink = (id:string) => `https://assets.coincap.io/assets/icons/${id.toLowerCase()}@2x.png`;

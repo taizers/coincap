@@ -1,10 +1,12 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { coinsApi } from "../services/CoinsService";
 import CoinModalReducer from "./reducers/CoinModalSlice";
+import PortfolioReducer from "./reducers/PortfolioSlice";
 
 const RootReducer = combineReducers({
     [coinsApi.reducerPath]: coinsApi.reducer,
     coinModal: CoinModalReducer,
+    portfolio: PortfolioReducer,
 });
 
 

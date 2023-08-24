@@ -1,14 +1,14 @@
-import React, { FC } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import { SvgIconComponent } from "@mui/icons-material";
 import IconButton from '@mui/material/IconButton';
 
 interface IIconButton {
     Icon: SvgIconComponent;
-    onClick: (event: React.MouseEvent<unknown>) => void;
-    size: 'small' | 'medium' | 'large' | undefined;
+    onClick: (event?: MouseEvent<unknown>) => void;
+    size?: 'small' | 'medium' | 'large';
 }
 
-const CustomIconButton: FC<IIconButton> = ({ Icon, onClick, size }) => {
+const CustomIconButton: FC<IIconButton> = ({ Icon, onClick, size = 'medium' }) => {
   return (<IconButton onClick={onClick} size={size}><Icon /></IconButton>);
 }
 
