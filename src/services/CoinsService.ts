@@ -9,19 +9,23 @@ export const coinsApi = createApi({
       { data: ICoin[] },
       { limit: number; offset: number; search?: string }
     >({
-      query: ({ limit = 5, offset = 0, search = null }) => ({
+      query: ({ limit = 5, offset = 0, search = '' }) => ({
         url: '/assets',
         params: {
           limit,
           offset,
-          search: search && search,
+          search,
         },
       }),
     }),
     fetchCoinsCount: build.query<{ data: ICoin[] }, string>({
-      query: () => ({
+      query: (search = '') => ({
         url: `/assets`,
+        params: {
+          search,
+        },
       }),
+
     }),
     fetchCoin: build.query<{ data: ICoin }, string>({
       query: (id: string) => ({

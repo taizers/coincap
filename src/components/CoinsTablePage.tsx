@@ -32,7 +32,7 @@ const CoinsTablePage = () => {
     limit,
     search: searchQuery,
   });
-  const { data: list } = coinsApi.useFetchCoinsCountQuery('');
+  const { data: list } = coinsApi.useFetchCoinsCountQuery(searchQuery);
 
   const requestSearch = (searchValue: string) => {
     setPage(defaultPage);

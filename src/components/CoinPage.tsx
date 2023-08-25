@@ -38,7 +38,7 @@ const CoinPage = () => {
   const {
     data: coinHistoryData,
     error: historyError,
-    isLoading: historyIsLoading,
+    isFetching : historyIsLoading,
   } = coinsApi.useFetchCoinHistoryQuery({
     id: id || '',
     interval,
@@ -132,7 +132,7 @@ const CoinPage = () => {
                   {coin.symbol}
                 </Typography>
               </Box>
-              <Box
+              {coin.priceUsd && <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -154,7 +154,7 @@ const CoinPage = () => {
                     Icon={AddShoppingCartIcon}
                   />
                 </Box>
-              </Box>
+              </Box>}
             </Box>
             {coin.rank && (
               <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
@@ -221,10 +221,10 @@ const CoinPage = () => {
                   {'m'}
                 </ToggleButton>
               </ToggleButtonGroup>
-              <Box sx={{overflowX: 'overlay',}}>
+              <Box sx={{overflowX: 'overlay', minHeight: '100px'}}>
                 {historyIsLoading && <Loader />}
                 {historyError && <Error text={getErrorText(historyError)} />}
-                {time?.length && prices?.length && !historyIsLoading && (
+                {!!time?.length && !!prices?.length && (
                   <Chart prices={prices} time={time} />
                 )}
               </Box>
