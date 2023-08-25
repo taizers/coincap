@@ -9,23 +9,42 @@ export const coinsApi = createApi({
       { data: ICoin[] },
       { limit: number; offset: number; search?: string }
     >({
-      query: ({ limit = 5, offset = 0, search = '' }) => ({
-        url: '/assets',
-        params: {
-          limit,
-          offset,
-          search,
-        },
-      }),
+      query: ({ limit = 5, offset = 0, search }) => {
+        if (search) {
+          return {
+            url: '/assets',
+            params: {
+              limit,
+              offset,
+              search
+            },
+          }
+        }
+
+        return {
+          url: '/assets',
+          params: {
+            limit,
+            offset,
+          },
+        }
+      },
     }),
     fetchCoinsCount: build.query<{ data: ICoin[] }, string>({
-      query: (search = '') => ({
-        url: `/assets`,
-        params: {
-          search,
-        },
-      }),
+      query: (search = '') => {
+        if (search) {
+          return {
+            url: '/assets',
+            params: {
+              search
+            },
+          }
+        }
 
+        return {
+          url: '/assets',
+        }
+      },
     }),
     fetchCoin: build.query<{ data: ICoin }, string>({
       query: (id: string) => ({
@@ -33,12 +52,20 @@ export const coinsApi = createApi({
       }),
     }),
     fetchPopularCoins: build.query<{ data: ICoin[] }, string>({
-      query: (ids: string) => ({
-        url: `/assets`,
-        params: {
-          ids,
-        },
-      }),
+      query: (ids: string) => {
+        if (ids) {
+          return {
+            url: '/assets',
+            params: {
+              ids
+            },
+          }
+        }
+
+        return {
+          url: '/assets',
+        }
+      },
     }),
     fetchCoinHistory: build.query<
       { data: ICoinHistory[] },

@@ -27,8 +27,11 @@ const PortfolioModal: FC<IPortfolioModal> = ({ handleClose }) => {
     new Set(portfolio.map((item: IPortfolio) => item.id))
   );
 
-  const { data: currentPortfolioCoins, isLoading, error } =
-    coinsApi.useFetchPopularCoinsQuery(coinsIds.join(','));
+  const {
+    data: currentPortfolioCoins,
+    isLoading,
+    error,
+  } = coinsApi.useFetchPopularCoinsQuery(coinsIds.join(','));
 
   const handleDeleteCoinButton = (index: number) => {
     const newPortfolio = [...portfolio];
@@ -65,7 +68,7 @@ const PortfolioModal: FC<IPortfolioModal> = ({ handleClose }) => {
       >
         {isLoading && <Loader />}
         {error && <Error text={getErrorText(error)} />}
-        {!error && !isLoading && !tableData.length && <NoData/>}
+        {!error && !isLoading && !tableData.length && <NoData />}
         {!!tableData.length && (
           <PortfolioTable
             list={tableData as IPortfolioTableItem[]}

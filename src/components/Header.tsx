@@ -32,17 +32,20 @@ const Header = () => {
     new Set(portfolio.map((item: IPortfolio) => item.id))
   );
 
-  const { data: portfolioCoins, error: portfolioCoinsError, isLoading: isLaodingportfolioCoins } =  coinsApi.useFetchPopularCoinsQuery(
-    coinsIds.join(',')
-  );
+  const {
+    data: portfolioCoins,
+    error: portfolioCoinsError,
+    isLoading: isLaodingportfolioCoins,
+  } = coinsApi.useFetchPopularCoinsQuery(coinsIds.join(','));
 
   let currentCoinsPrice = 0;
-  let startCoinsPrice = 0;
+  let purchasePrice = 0;
 
   portfolioCoins?.data?.forEach((coin: ICoin) => {
     const filteredPortfolio = portfolio.filter(
       (portfolioCoin: IPortfolio) => portfolioCoin.id === coin.id
     );
+    
     filteredPortfolio?.forEach(
       (portfolioCoin: IPortfolio) =>
         (currentCoinsPrice += +portfolioCoin.count * +coin.priceUsd)
@@ -51,18 +54,16 @@ const Header = () => {
 
   portfolio.forEach(
     (portfolioCoin: IPortfolio) =>
-      (startCoinsPrice += +portfolioCoin.price * +portfolioCoin.count)
+      (purchasePrice += +portfolioCoin.price * +portfolioCoin.count)
   );
 
-  const difference = currentCoinsPrice - startCoinsPrice;
+  const difference = currentCoinsPrice - purchasePrice;
   const percentageDifference = (difference / currentCoinsPrice) * 100 || 0;
   const coins = data?.data;
 
   const buttonText = `${roundValue(currentCoinsPrice)} USD ${
     difference > 0 ? '+' : ''
-  }${roundValue(difference)}$ (${roundValue(
-    Math.abs(percentageDifference)
-  )}%)`;
+  }${roundValue(difference)}$ (${roundValue(Math.abs(percentageDifference))}%)`;
 
   const handlePortfolioClick = () => {
     dispatch(portfolioSlice.actions.openPortfolioModal());
@@ -93,7 +94,7 @@ const Header = () => {
         }}
       >
         {error && <Error text={getErrorText(error)} />}
-        {isLoading && <Loader/>}
+        {isLoading && <Loader />}
         {coins?.map((coin) => {
           return (
             <Box
@@ -133,16 +134,20 @@ const Header = () => {
           },
         }}
       >
-        {portfolioCoinsError && <Error text={getErrorText(portfolioCoinsError)} />}
-        {isLaodingportfolioCoins && <Loader/>}
-        {data && (<Box sx={{display: 'flex', alignItems: 'center'}}>
+        {portfolioCoinsError && (
+          <Error text={getErrorText(portfolioCoinsError)} />
+        )}
+        {isLaodingportfolioCoins && <Loader />}
+        {data && (
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <WorkHistoryIcon />
             <CustomButton
               onClick={handlePortfolioClick}
               variant={'text'}
               text={buttonText}
             />
-          </Box>)}
+          </Box>
+        )}
       </Box>
     </Box>
   );

@@ -9,8 +9,10 @@ interface INoData {
 
 const NoData: FC<INoData> = ({ text = 'NoData', variant = 'h4' }) => {
   return (
-    <Box sx={{display: 'flex', justifyContent: 'center', m: 2}}>
-        <Typography component='span' variant={variant}>{text}</Typography>
+    <Box sx={{ display: 'flex', justifyContent: 'center', m: 2 }}>
+      <Typography component="span" variant={variant}>
+        {text}
+      </Typography>
     </Box>
   );
 };

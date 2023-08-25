@@ -70,27 +70,29 @@ const CoinModal: FC<ICoinModal> = ({ handleClose }) => {
       >
         {error && <Error text={getErrorText(error)} />}
         {isLoading && <Loader />}
-        {data && <TextField
-          id="outlined-count"
-          label="Count"
-          sx={{
-            m: 2,
-          }}
-          inputProps={{
-            step: 1,
-            defaultValue: 0,
-            min: 1,
-            max: 1000,
-            type: 'number',
-            pattern: '[0-9]*',
-          }}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setCount(event.target.value)
-          }
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />}
+        {data && (
+          <TextField
+            id="outlined-count"
+            label="Count"
+            sx={{
+              m: 2,
+            }}
+            inputProps={{
+              step: 1,
+              defaultValue: 0,
+              min: 1,
+              max: 1000,
+              type: 'number',
+              pattern: '[0-9]*',
+            }}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              setCount(event.target.value)
+            }
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>

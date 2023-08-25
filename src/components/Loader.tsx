@@ -4,7 +4,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 const Loader = () => {
   return (
-    <Box sx={{ width: '95%', m: 2}}>
+    <Box sx={{ width: '95%', m: 2 }}>
       <LinearProgress />
     </Box>
   );

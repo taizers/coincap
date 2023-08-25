@@ -8,7 +8,12 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
-import { handleAddButtonClick, roundValue, getIconsLink, getErrorText } from '../utils';
+import {
+  handleAddButtonClick,
+  roundValue,
+  getIconsLink,
+  getErrorText,
+} from '../utils';
 import Loader from './Loader';
 import { coinsApi } from '../services/CoinsService';
 import Chart from './Chart';
@@ -40,7 +45,7 @@ const CoinPage = () => {
   const {
     data: coinHistoryData,
     error: historyError,
-    isFetching : historyIsLoading,
+    isFetching: historyIsLoading,
   } = coinsApi.useFetchCoinHistoryQuery({
     id: id || '',
     interval,
@@ -80,7 +85,7 @@ const CoinPage = () => {
           Icon={ArrowBackIcon}
         />
       </Box>
-      
+
       {isLoading && <Loader />}
       {error && <Error text={getErrorText(error)} />}
 
@@ -107,7 +112,7 @@ const CoinPage = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 flexWrap: 'wrap',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               <Box
@@ -134,52 +139,104 @@ const CoinPage = () => {
                   {coin.symbol}
                 </Typography>
               </Box>
-              {coin.priceUsd && +coin.priceUsd > 0 && <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <Typography
-                  sx={{ m: 3 }}
-                  align="left"
-                  variant="h3"
-                >{`${roundValue(+coin.priceUsd)} $`}</Typography>
-                <Box>
-                  <CustomIconButton
-                    size="large"
-                    onClick={(event?: React.MouseEvent<unknown>) =>
-                      handleAddButtonClick(coin?.id, dispatch, event)
-                    }
-                    Icon={AddShoppingCartIcon}
-                  />
+              {coin.priceUsd && +coin.priceUsd > 0 && (
+                <Box
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                  }}
+                >
+                  <Typography
+                    sx={{ m: 3 }}
+                    align="left"
+                    variant="h3"
+                  >{`${roundValue(+coin.priceUsd)} $`}</Typography>
+                  <Box>
+                    <CustomIconButton
+                      size="large"
+                      onClick={(event?: React.MouseEvent<unknown>) =>
+                        handleAddButtonClick(coin?.id, dispatch, event)
+                      }
+                      Icon={AddShoppingCartIcon}
+                    />
+                  </Box>
                 </Box>
-              </Box>}
+              )}
             </Box>
             {coin.rank && (
-              <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                <Typography component="span" variant="h4" display="inline" color={'gray'}>Rank: </Typography>
-                <Typography component="span" variant="h4" display="inline" fontWeight={500}>{coin.rank}</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  color={'gray'}
+                >
+                  Rank:{' '}
+                </Typography>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  fontWeight={500}
+                >
+                  {coin.rank}
+                </Typography>
               </Box>
             )}
             {coin.supply && +coin.supply > 0 && (
-              <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                <Typography component="span" variant="h4" display="inline" color={'gray'}>Supply: </Typography>
-                <Typography component="span" variant="h4" display="inline" fontWeight={500}>{`${roundValue(+coin.supply)} $`}</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  color={'gray'}
+                >
+                  Supply:{' '}
+                </Typography>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  fontWeight={500}
+                >{`${roundValue(+coin.supply)} $`}</Typography>
               </Box>
             )}
             {coin.maxSupply && +coin.maxSupply > 0 && (
-              <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                <Typography component="span" variant="h4" display="inline" color={'gray'}>Max supply:</Typography>
-                <Typography component="span" variant="h4" display="inline" fontWeight={500}>{`${roundValue(+coin.maxSupply)} $`}</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  color={'gray'}
+                >
+                  Max supply:
+                </Typography>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  fontWeight={500}
+                >{`${roundValue(+coin.maxSupply)} $`}</Typography>
               </Box>
             )}
             {coin.marketCapUsd && +coin.marketCapUsd > 0 && (
-              <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
-                <Typography component="span" variant="h4" display="inline" color={'gray'}>Market cap:</Typography>
-                <Typography component="span" variant="h4" display="inline" fontWeight={500}>{`${roundValue(+coin.marketCapUsd)} $`}</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  color={'gray'}
+                >
+                  Market cap:
+                </Typography>
+                <Typography
+                  component="span"
+                  variant="h4"
+                  display="inline"
+                  fontWeight={500}
+                >{`${roundValue(+coin.marketCapUsd)} $`}</Typography>
               </Box>
             )}
           </Box>
@@ -209,7 +266,7 @@ const CoinPage = () => {
                   justifyContent: 'center',
                   '@media (max-width: 1000px)': {
                     flexDirection: 'column',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
                   },
                 }}
               >
@@ -223,10 +280,12 @@ const CoinPage = () => {
                   {'m'}
                 </ToggleButton>
               </ToggleButtonGroup>
-              <Box sx={{overflowX: 'overlay', minHeight: '100px'}}>
+              <Box sx={{ overflowX: 'overlay', minHeight: '100px' }}>
                 {historyIsLoading && <Loader />}
                 {historyError && <Error text={getErrorText(historyError)} />}
-                {!time?.length && !historyError && !historyIsLoading && <NoData/>}
+                {!time?.length && !historyError && !historyIsLoading && (
+                  <NoData />
+                )}
                 {!!time?.length && !!prices?.length && (
                   <Chart prices={prices} time={time} />
                 )}

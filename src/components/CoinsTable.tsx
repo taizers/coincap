@@ -99,14 +99,14 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({
   return (
     <TableHead>
       <TableRow>
-        <TableCell align='right'></TableCell>
-        <TableCell key='symbol' align='left'>
+        <TableCell align="right"></TableCell>
+        <TableCell key="symbol" align="left">
           {'Name'}
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align='right'
+            align="right"
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -116,7 +116,7 @@ const EnhancedTableHead: FC<EnhancedTableProps> = ({
             >
               {headCell.label}
               {orderBy === headCell.id ? (
-                <Box component='span' sx={visuallyHidden}>
+                <Box component="span" sx={visuallyHidden}>
                   {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
                 </Box>
               ) : null}
@@ -194,42 +194,48 @@ const CoinsTable: FC<ICoinsTable> = ({
                   <TableRow
                     hover
                     onClick={() => handleRowClick(row.id)}
-                    role='coinRow'
+                    role="coinRow"
                     tabIndex={-1}
                     key={row.id}
                     sx={{ cursor: 'pointer' }}
                   >
-                    <TableCell align='left'>
-                      {!!row.priceUsd && <CustomIconButton
-                        size='medium'
-                        onClick={(event?: MouseEvent<unknown>) =>
-                          handleAddButtonClick(row.id, dispatch, event)
-                        }
-                        Icon={AddShoppingCartIcon}
-                      />}
+                    <TableCell align="left">
+                      {!!row.priceUsd && (
+                        <CustomIconButton
+                          size="medium"
+                          onClick={(event?: MouseEvent<unknown>) =>
+                            handleAddButtonClick(row.id, dispatch, event)
+                          }
+                          Icon={AddShoppingCartIcon}
+                        />
+                      )}
                     </TableCell>
                     <TableCell
-                      sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}
-                      align='left'
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'left',
+                      }}
+                      align="left"
                     >
                       <Avatar
                         sx={{ display: 'inline-block', mr: 1 }}
                         alt={row.symbol}
                         src={getIconsLink(row.symbol)}
                       />
-                      <Typography variant='subtitle1'>{row.symbol}</Typography>
+                      <Typography variant="subtitle1">{row.symbol}</Typography>
                     </TableCell>
-                    <TableCell align='right'>
-                      {!!row.priceUsd && `${roundValue(
-                      row.priceUsd
-                      )} $`}
+                    <TableCell align="right">
+                      {!!row.priceUsd && `${roundValue(row.priceUsd)} $`}
                     </TableCell>
-                    <TableCell align='right'>{!!row.marketCapUsd && `${roundValue(
-                      row.marketCapUsd
-                    )} $`}</TableCell>
-                    <TableCell align='right'>{!!row.changePercent24Hr &&`${roundValue(
-                      row.changePercent24Hr
-                    )} %`}</TableCell>
+                    <TableCell align="right">
+                      {!!row.marketCapUsd &&
+                        `${roundValue(row.marketCapUsd)} $`}
+                    </TableCell>
+                    <TableCell align="right">
+                      {!!row.changePercent24Hr &&
+                        `${roundValue(row.changePercent24Hr)} %`}
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -243,7 +249,7 @@ const CoinsTable: FC<ICoinsTable> = ({
         </TableContainer>
         <TablePagination
           rowsPerPageOptions={rowsPerPageOptions}
-          component='div'
+          component="div"
           count={itemsCount}
           rowsPerPage={limit}
           page={page}
