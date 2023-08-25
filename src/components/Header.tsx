@@ -32,7 +32,7 @@ const Header = () => {
     new Set(portfolio.map((item: IPortfolio) => item.id))
   );
 
-  const { data: portfolioCoins, error: portfolioCoinsError, isLoading: isLaodingportfolioCoins } = coinsApi.useFetchPopularCoinsQuery(
+  const { data: portfolioCoins, error: portfolioCoinsError, isLoading: isLaodingportfolioCoins } =  coinsApi.useFetchPopularCoinsQuery(
     coinsIds.join(',')
   );
 

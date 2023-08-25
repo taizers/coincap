@@ -29,8 +29,7 @@ const CoinPage = () => {
 
   const [period, setPeriod] = React.useState(oneDayInSeconds);
   const [interval, setHistoryInterval] = React.useState<string>('h1');
-
-  const currentTime = moment().unix();
+  const [currentTime, setCurrentTime] = React.useState<number>(moment().unix());
 
   const {
     data: coinData,
@@ -226,6 +225,7 @@ const CoinPage = () => {
               <Box sx={{overflowX: 'overlay', minHeight: '100px'}}>
                 {historyIsLoading && <Loader />}
                 {historyError && <Error text={getErrorText(historyError)} />}
+                {!time?.length && !historyError && !historyIsLoading && <Box sx={{display: 'flex', justifyContent: 'center', m: 2}}><Typography component="span" variant="h4">No Data</Typography></Box>}
                 {!!time?.length && !!prices?.length && (
                   <Chart prices={prices} time={time} />
                 )}
