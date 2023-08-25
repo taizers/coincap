@@ -200,13 +200,13 @@ const CoinsTable: FC<ICoinsTable> = ({
                     sx={{ cursor: 'pointer' }}
                   >
                     <TableCell align='left'>
-                      <CustomIconButton
+                      {!!row.priceUsd && <CustomIconButton
                         size='medium'
                         onClick={(event?: MouseEvent<unknown>) =>
                           handleAddButtonClick(row.id, dispatch, event)
                         }
                         Icon={AddShoppingCartIcon}
-                      />
+                      />}
                     </TableCell>
                     <TableCell
                       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'left' }}
@@ -219,13 +219,15 @@ const CoinsTable: FC<ICoinsTable> = ({
                       />
                       <Typography variant='subtitle1'>{row.symbol}</Typography>
                     </TableCell>
-                    <TableCell align='right'>{`${roundValue(
+                    <TableCell align='right'>
+                      {!!row.priceUsd && `${roundValue(
                       row.priceUsd
-                    )} $`}</TableCell>
-                    <TableCell align='right'>{`${roundValue(
+                      )} $`}
+                    </TableCell>
+                    <TableCell align='right'>{!!row.marketCapUsd && `${roundValue(
                       row.marketCapUsd
                     )} $`}</TableCell>
-                    <TableCell align='right'>{`${roundValue(
+                    <TableCell align='right'>{!!row.changePercent24Hr &&`${roundValue(
                       row.changePercent24Hr
                     )} %`}</TableCell>
                   </TableRow>

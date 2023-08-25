@@ -134,7 +134,7 @@ const CoinPage = () => {
                   {coin.symbol}
                 </Typography>
               </Box>
-              {coin.priceUsd && <Box
+              {coin.priceUsd && +coin.priceUsd > 0 && <Box
                 sx={{
                   display: 'flex',
                   alignItems: 'center',
@@ -164,19 +164,19 @@ const CoinPage = () => {
                 <Typography component="span" variant="h4" display="inline" fontWeight={500}>{coin.rank}</Typography>
               </Box>
             )}
-            {coin.supply && (
+            {coin.supply && +coin.supply > 0 && (
               <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
                 <Typography component="span" variant="h4" display="inline" color={'gray'}>Supply: </Typography>
                 <Typography component="span" variant="h4" display="inline" fontWeight={500}>{`${roundValue(+coin.supply)} $`}</Typography>
               </Box>
             )}
-            {coin.maxSupply && (
+            {coin.maxSupply && +coin.maxSupply > 0 && (
               <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
                 <Typography component="span" variant="h4" display="inline" color={'gray'}>Max supply:</Typography>
                 <Typography component="span" variant="h4" display="inline" fontWeight={500}>{`${roundValue(+coin.maxSupply)} $`}</Typography>
               </Box>
             )}
-            {coin.marketCapUsd && (
+            {coin.marketCapUsd && +coin.marketCapUsd > 0 && (
               <Box sx={{display: 'flex', flexWrap: 'wrap'}}>
                 <Typography component="span" variant="h4" display="inline" color={'gray'}>Market cap:</Typography>
                 <Typography component="span" variant="h4" display="inline" fontWeight={500}>{`${roundValue(+coin.marketCapUsd)} $`}</Typography>
