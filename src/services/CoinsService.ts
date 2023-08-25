@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query/react';
 import { ICoin, ICoinHistory } from '../models/ICoins';
+import { countPopularCoins, startPositionOfPopularCoins } from '../constants';
 
 export const coinsApi = createApi({
   reducerPath: 'coinsApi',
@@ -52,20 +53,21 @@ export const coinsApi = createApi({
       }),
     }),
     fetchPopularCoins: build.query<{ data: ICoin[] }, string>({
-      query: (ids: string) => {
-        if (ids) {
-          return {
-            url: '/assets',
-            params: {
-              ids
-            },
-          }
+      query: () => ({
+        url: '/assets',
+        params: {
+          limit: countPopularCoins,
+          offset: startPositionOfPopularCoins,
         }
-
-        return {
-          url: '/assets',
-        }
-      },
+      }),
+    }),
+    fetchCoinsByIds: build.query<{ data: ICoin[] }, string>({
+      query: (ids: string) => ({
+        url: '/assets',
+        params: {
+          ids
+        },
+      }),
     }),
     fetchCoinHistory: build.query<
       { data: ICoinHistory[] },

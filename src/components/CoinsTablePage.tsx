@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import CoinsTable from './CoinsTable';
 import SearchBar from './SearchBar';
 import { ICoin } from '../models/ICoins';

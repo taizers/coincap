@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 import WorkHistoryIcon from '@mui/icons-material/WorkHistory';
 import Avatar from '@mui/material/Avatar';
 import { coinsApi } from '../services/CoinsService';
-import { popularCoins } from '../constants';
 import { roundValue, getIconsLink, getErrorText } from '../utils';
 import { getPortfolio } from '../utils/localStorage';
 import { IPortfolio } from '../models/IPortfolio';
@@ -22,9 +21,7 @@ const Header = () => {
     dispatch(portfolioSlice.actions.setPortfolioData(portfolio));
   }, []);
 
-  const { data, error, isLoading } = coinsApi.useFetchPopularCoinsQuery(
-    popularCoins.join(',')
-  );
+  const { data, error, isLoading } = coinsApi.useFetchPopularCoinsQuery('');
 
   const { portfolio } = useAppSelector((state) => state.portfolio);
 
@@ -36,7 +33,7 @@ const Header = () => {
     data: portfolioCoins,
     error: portfolioCoinsError,
     isLoading: isLaodingportfolioCoins,
-  } = coinsApi.useFetchPopularCoinsQuery(coinsIds.join(','));
+  } = coinsApi.useFetchCoinsByIdsQuery(coinsIds.join(','));
 
   let currentCoinsPrice = 0;
   let purchasePrice = 0;

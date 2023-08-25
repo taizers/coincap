@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -20,7 +20,7 @@ interface ICoinModal {
 
 const CoinModal: FC<ICoinModal> = ({ handleClose }) => {
   const dispatch = useAppDispatch();
-  const [count, setCount] = React.useState<string>('');
+  const [count, setCount] = useState<string>('');
 
   const { coinId } = useAppSelector((state) => state.coinModal);
   const { data, error, isLoading } = coinsApi.useFetchCoinQuery(coinId);

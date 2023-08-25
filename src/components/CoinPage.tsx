@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, MouseEvent } from 'react';
 import { Box, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import ToggleButton from '@mui/material/ToggleButton';
@@ -33,9 +33,9 @@ const CoinPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const [period, setPeriod] = React.useState(oneDayInSeconds);
-  const [interval, setHistoryInterval] = React.useState<string>('h1');
-  const [currentTime, setCurrentTime] = React.useState<number>(moment().unix());
+  const [period, setPeriod] = useState(oneDayInSeconds);
+  const [interval, setHistoryInterval] = useState<string>('h1');
+  const [currentTime, setCurrentTime] = useState<number>(moment().unix());
 
   const {
     data: coinData,
@@ -64,7 +64,7 @@ const CoinPage = () => {
   const prices = coinHistory?.map((item) => +item?.priceUsd);
 
   const handlePeriod = (
-    event: React.MouseEvent<HTMLElement>,
+    event: MouseEvent<HTMLElement>,
     newPeriod: number | null
   ) => {
     if (newPeriod !== null) {
@@ -156,7 +156,7 @@ const CoinPage = () => {
                   <Box>
                     <CustomIconButton
                       size="large"
-                      onClick={(event?: React.MouseEvent<unknown>) =>
+                      onClick={(event?: MouseEvent<unknown>) =>
                         handleAddButtonClick(coin?.id, dispatch, event)
                       }
                       Icon={AddShoppingCartIcon}

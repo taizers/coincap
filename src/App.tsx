@@ -11,13 +11,14 @@ import { coinModalSlice } from './store/reducers/CoinModalSlice';
 import { portfolioSlice } from './store/reducers/PortfolioSlice';
 
 function App() {
+  const dispatch = useAppDispatch();
+
   const { isOpen: isCoinModalOpen } = useAppSelector(
     (state) => state.coinModal
   );
   const { isOpen: isPortfolioModalOpen } = useAppSelector(
     (state) => state.portfolio
   );
-  const dispatch = useAppDispatch();
 
   return (
     <Box className={'container'}>

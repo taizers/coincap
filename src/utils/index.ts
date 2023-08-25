@@ -1,5 +1,3 @@
-import { FetchBaseQueryError } from '@reduxjs/toolkit/dist/query';
-import { SerializedError } from '@reduxjs/toolkit';
 import { AppDispatch } from '../store';
 import { coinModalSlice } from '../store/reducers/CoinModalSlice';
 

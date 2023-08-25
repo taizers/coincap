@@ -7,6 +7,7 @@ export const weekInSeconds = 604800;
 export const monthInSeconds = 2629743;
 export const oneSecondInMs = 1000;
 
-export const portfolioValue = 'portfolio';
+export const startPositionOfPopularCoins = 0;
+export const countPopularCoins = 3;
 
-export const popularCoins = ['bitcoin', 'ethereum', 'litecoin'];
+export const portfolioValue = 'portfolio';

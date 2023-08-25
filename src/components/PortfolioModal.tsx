@@ -31,7 +31,7 @@ const PortfolioModal: FC<IPortfolioModal> = ({ handleClose }) => {
     data: currentPortfolioCoins,
     isLoading,
     error,
-  } = coinsApi.useFetchPopularCoinsQuery(coinsIds.join(','));
+  } = coinsApi.useFetchCoinsByIdsQuery(coinsIds.join(','));
 
   const handleDeleteCoinButton = (index: number) => {
     const newPortfolio = [...portfolio];
@@ -45,6 +45,7 @@ const PortfolioModal: FC<IPortfolioModal> = ({ handleClose }) => {
     const coin = currentPortfolioCoins?.data.find(
       (coin) => item.id === coin.id
     );
+
     if (coin) {
       return {
         id: item.id,
