@@ -22,10 +22,10 @@ export const handleAddButtonClick = (
 export const getIconsLink = (id: string) =>
   `https://assets.coincap.io/assets/icons/${id.toLowerCase()}@2x.png`;
 
-export const getErrorText = (error: FetchBaseQueryError | SerializedError) => {
+export const getErrorText = (error: any) => {  
   if ('error' in error) {
     return error.error;
   }
 
-  return '';
+  return error?.data?.error || '';
 }

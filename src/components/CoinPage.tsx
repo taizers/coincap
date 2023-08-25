@@ -30,6 +30,8 @@ const CoinPage = () => {
   const [period, setPeriod] = React.useState(oneDayInSeconds);
   const [interval, setHistoryInterval] = React.useState<string>('h1');
 
+  const currentTime = moment().unix();
+
   const {
     data: coinData,
     error,
@@ -42,8 +44,8 @@ const CoinPage = () => {
   } = coinsApi.useFetchCoinHistoryQuery({
     id: id || '',
     interval,
-    start: (moment().unix() - period) * oneSecondInMs,
-    end: moment().unix() * oneSecondInMs,
+    start: (currentTime - period) * oneSecondInMs,
+    end: currentTime * oneSecondInMs,
   });
 
   const coin = coinData?.data;
@@ -78,8 +80,8 @@ const CoinPage = () => {
           Icon={ArrowBackIcon}
         />
       </Box>
+      
       {isLoading && <Loader />}
-
       {error && <Error text={getErrorText(error)} />}
 
       {!!coin && (!error || !historyError) && (
