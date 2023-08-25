@@ -21,6 +21,7 @@ import {
 } from '../constants';
 import { useAppDispatch } from '../hooks';
 import Error from './Error';
+import NoData from './NoData';
 
 const CoinPage = () => {
   const { id } = useParams();
@@ -225,7 +226,7 @@ const CoinPage = () => {
               <Box sx={{overflowX: 'overlay', minHeight: '100px'}}>
                 {historyIsLoading && <Loader />}
                 {historyError && <Error text={getErrorText(historyError)} />}
-                {!time?.length && !historyError && !historyIsLoading && <Box sx={{display: 'flex', justifyContent: 'center', m: 2}}><Typography component="span" variant="h4">No Data</Typography></Box>}
+                {!time?.length && !historyError && !historyIsLoading && <NoData/>}
                 {!!time?.length && !!prices?.length && (
                   <Chart prices={prices} time={time} />
                 )}

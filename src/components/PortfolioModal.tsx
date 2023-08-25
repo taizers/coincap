@@ -13,6 +13,7 @@ import { portfolioSlice } from '../store/reducers/PortfolioSlice';
 import Loader from './Loader';
 import Error from './Error';
 import { getErrorText } from '../utils';
+import NoData from './NoData';
 
 interface IPortfolioModal {
   handleClose: () => void;
@@ -64,7 +65,8 @@ const PortfolioModal: FC<IPortfolioModal> = ({ handleClose }) => {
       >
         {isLoading && <Loader />}
         {error && <Error text={getErrorText(error)} />}
-        {!isLoading && (
+        {!error && !isLoading && !tableData.length && <NoData/>}
+        {!!tableData.length && (
           <PortfolioTable
             list={tableData as IPortfolioTableItem[]}
             onDeleteClick={handleDeleteCoinButton}

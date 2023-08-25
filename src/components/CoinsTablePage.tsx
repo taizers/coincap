@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import CoinsTable from './CoinsTable';
 import SearchBar from './SearchBar';
 import { ICoin } from '../models/ICoins';
@@ -8,6 +8,7 @@ import { coinsApi } from '../services/CoinsService';
 import { defaultPage, defaultLimit } from '../constants';
 import Error from './Error';
 import { getErrorText } from '../utils';
+import NoData from './NoData';
 
 const getRows = (list: ICoin[]) => {
   return list.map(
@@ -59,6 +60,7 @@ const CoinsTablePage = () => {
         }}
         requestSearch={requestSearch}
       />
+      {!data?.data?.length && !error && !isLoading && <NoData />}
       {!!data?.data?.length && (
         <CoinsTable
           rows={getRows(data.data)}
