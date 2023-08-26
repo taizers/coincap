@@ -7,7 +7,7 @@ interface INoData {
   variant?: Variant;
 }
 
-const NoData: FC<INoData> = ({ text = 'NoData', variant = 'h4' }) => {
+const NoData: FC<INoData> = ({ text = 'No Data', variant = 'h4' }) => {
   return (
     <Box sx={{ display: 'flex', justifyContent: 'center', m: 2 }}>
       <Typography component="span" variant={variant}>
